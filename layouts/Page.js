@@ -1,18 +1,17 @@
-import { Head } from 'next/head'
+import Head from 'next/head'
 import React from 'react'
 
-function Page({children, title, content}) {
-  return (
-    <div>
-        <Head>
-        <title>{title}</title>
-        <meta name="description" content={content} />
-      </Head>
-      {
-          children
-      }
-    </div>
-  )
-}
 
-export default Page
+export default function Page({children, title, content}) {
+    return (
+        <div className='mx-12 bg-slate-100'>
+            <Head>
+                <title>{title}</title>
+                <meta name="description" content={content} />
+            </Head>
+            {
+                children
+            }
+        </div>
+    )
+}
