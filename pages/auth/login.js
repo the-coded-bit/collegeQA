@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { authContext } from '../../contexts/authWrapper';
 import Page from '../../layouts/Page'
+import { useRouter } from 'next/router';
+import toast, { Toaster } from 'react-hot-toast';
 
 function login() {
 
   //get login function, authUser, setAuthUser, loading from context
   const {authUser, login, loading, setAuthUser} = useContext(authContext);
+
+  //get router
+  const router = useRouter();
 
   // email and password states
   const [email, setEmail] = useState('');
@@ -24,6 +29,9 @@ function login() {
 		else {
 			// we have user
 			console.log('yay!!! we got user');
+
+      //TODO: redirect user to main Page
+      router.push('/');
 		}
 	}, [authUser]);
 
@@ -33,20 +41,31 @@ function login() {
     e.preventDefault();
     console.log('login button clicked');
     if (email != '' && password != '') {
+      const userPromise = toast.promise(
+        login(email, password),
+        {
+          loading : 'Checking Credentials....',
+          success : <b>Welcome Back!!!</b>,
+          error : <b>Account not found!!!</b>
+        }
+        );
       try {
-        const user = await login(email, password);
+        const user = await userPromise;
         console.log(user);
         setAuthUser(user);
         console.log('end of useEffect of login');
       } catch (err) {
         console.log(err);
+        // user not found;
+        // TODO: Redirect to signup page
       }
     }
 
   }
 
   return (
-    <Page>
+    <Page bgColor = 'bg-slate-100' title='SignIn' content = 'SignIn page'>
+      <Toaster/>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 bg-white p-10">
           <div>
