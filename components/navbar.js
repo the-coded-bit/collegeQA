@@ -1,12 +1,30 @@
+import { doc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import { authContext } from '../contexts/authWrapper';
+import { db } from '../firebase/firebase';
 
 function Navbar() {
   const imageUrl = 'https://source.unsplash.com/1600x900/?beach';
   // getting logout from authContext
-  const { logout } = useContext(authContext);
+  const { logout, authUser } = useContext(authContext);
+
+  //useState for profile pic
+  const [profileUrl, setprofileUrl] = useState(imageUrl);
+
+  useEffect(() => {
+    // fetch user profile pic url
+    const getProfileUrlLink = async () => {
+      const userDocRef = doc(db, `users/${authUser.uid}`);
+      const docSnap = await getDoc(userDocRef);
+      console.log(docSnap.data());
+      setprofileUrl(docSnap.data()?.photoURL);
+    }
+
+    getProfileUrlLink();
+
+  }, []);
 
   // grabbing router object
   const router = useRouter();
@@ -15,19 +33,19 @@ function Navbar() {
     toast.promise(
       logout(),
       {
-        loading : 'Logging Off !!',
-        success : <b>GoodBye!!!</b>,
-        error : <b>Could not Log Off</b>
+        loading: 'Logging Off !!',
+        success: <b>GoodBye!!!</b>,
+        error: <b>Could not Log Off</b>
       }
     )
   }
 
-  const handleProfileBtn = () =>{
-    router.push
+  const handleProfileBtn = () => {
+    router.push('/profile');
   }
   return (
     <>
-      <Toaster position='top-right'/>
+      <Toaster position='top-right' />
       <nav className="bg-white border-black border-b-2 px-2 sm:px-4 py-2.5 rounded flex justify-between items-center mb-2">
         {/* left side of navbar */}
         <div className='flex w-1/4 items-center gap-x-3'>
@@ -61,7 +79,7 @@ function Navbar() {
           </div>
           {/* profile image */}
           <button className='group inline-block relative'>
-            <img className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src={imageUrl} alt="Bordered avatar"></img>
+            <img className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src={profileUrl} alt="Bordered avatar"></img>
             <ul className='hidden absolute text-slate-100 text-semibold shadow -left-6 text-center z-10 bg-indigo-600 rounded p-3 group-hover:block' aria-labelledby='dropdowndefault'>
               <li onClick={handleProfileBtn}>Profile</li>
               <li onClick={handleLogout}>Logout</li>
