@@ -5,8 +5,6 @@ import { db } from '../firebase/firebase';
 import Page from '../layouts/Page'
 
 function Answer({ id }) {
-    //grabbing user
-    const { authUser } = useContext(authContext);
 
     const [answers, setAnswers] = useState([]);
     const [question, setQuestion] = useState('');
