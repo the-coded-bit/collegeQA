@@ -26,7 +26,7 @@ export default function Home() {
       // collection reference to questions 
       const questionsRef = collection(db, 'questions');
       //creating query to get only top 5 questions docs
-      const q = query(questionsRef, limit(6));
+      const q = query(questionsRef, limit(20));
       // applying query
 
       const querySnapshot = await getDocs(q);
@@ -45,7 +45,7 @@ export default function Home() {
 
     initSetup();
 
-  }, [])
+  }, [questionModal])
 
   console.log('printing user at time of / page loading', authUser, loading);
   return (
