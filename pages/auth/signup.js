@@ -87,10 +87,6 @@ function signup() {
 
         await setDoc(doc(db, `users/${user.user.uid}`), userStore);
 
-
-
-
-
       }
       catch (err) {
         console.log(err);
