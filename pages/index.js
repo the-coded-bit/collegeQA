@@ -4,6 +4,7 @@ import { authContext } from '../contexts/authWrapper'
 import { collection, doc, getDoc, getDocs, limit, query } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import { QuestionModal, Navbar, AnswerModal, FrontCard } from '../components';
+import { useRouter } from 'next/router';
 
 
 
@@ -47,35 +48,45 @@ export default function Home() {
 
   }, [questionModal])
 
+
+  const Redirect = () => {
+    const router = useRouter();
+    router.push('/auth/login');
+    return null;
+  }
+
   console.log('printing user at time of / page loading', authUser, loading);
   return (
     (
-      questionModal ?
-        <QuestionModal modalStatus={setQuestionModal}></QuestionModal> :
-        answerModal ? <AnswerModal modalStatus={setAnswerModal} questionId={questionID} /> :
-          <Page title='home' content='home Page' >
-            <Navbar />
-            <div className='h-full'>
-              {
-                // TODO : add answer given by one person, update his name, date answered on.
-                 questionArray.map(({ stringValue, questionId }) => (
-                  <FrontCard stringValue={stringValue} questionId = {questionId} setAnswerModal = {setAnswerModal} setquestionID = {setquestionID} key = {questionId}/>
-                ))
-              }
-            </div>
+      authUser?.uid ?
+        questionModal ?
+          <QuestionModal modalStatus={setQuestionModal}></QuestionModal> :
+          answerModal ? <AnswerModal modalStatus={setAnswerModal} questionId={questionID} /> :
+            <Page title='home' content='home Page' >
+              <Navbar />
+              <div className='h-full'>
+                {
+                  // TODO : add answer given by one person, update his name, date answered on.
+                  questionArray.map(({ stringValue, questionId }) => (
+                    <FrontCard stringValue={stringValue} questionId={questionId} setAnswerModal={setAnswerModal} setquestionID={setquestionID} key={questionId} />
+                  ))
+                }
+              </div>
 
-            <div className='fixed bottom-12 right-6 '>
-              <button
-                onClick={() => setQuestionModal(!questionModal)}
-                className="p-0 w-12 h-12 bg-indigo-600 rounded-full hover:bg-red-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
-                <svg viewBox="0 0 20 20" enableBackground="new 0 0 20 20" className="w-6 h-6 inline-block">
-                  <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
+              <div className='fixed bottom-12 right-6 '>
+                <button
+                  onClick={() => setQuestionModal(!questionModal)}
+                  className="p-0 w-12 h-12 bg-indigo-600 rounded-full hover:bg-red-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
+                  <svg viewBox="0 0 20 20" enableBackground="new 0 0 20 20" className="w-6 h-6 inline-block">
+                    <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
                                     C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
                                     C15.952,9,16,9.447,16,10z" />
-                </svg>
-              </button>
-            </div>
-          </Page>
+                  </svg>
+                </button>
+              </div>
+            </Page>
+        :
+        <Redirect />
     )
   )
 }

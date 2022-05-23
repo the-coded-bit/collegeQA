@@ -52,7 +52,7 @@ function login() {
       try {
         const user = await userPromise;
         console.log(user);
-        setAuthUser(user);
+        setAuthUser(user.user);
         console.log('end of useEffect of login');
       } catch (err) {
         console.log(err);
@@ -65,7 +65,7 @@ function login() {
 
   return (
     <Page bgColor = 'bg-slate-100' title='SignIn' content = 'SignIn page'>
-      <Toaster/>
+      <Toaster position='top-right'/>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 bg-white p-10">
           <div>

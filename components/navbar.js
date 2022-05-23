@@ -8,7 +8,7 @@ import { db } from '../firebase/firebase';
 function Navbar() {
   const imageUrl = 'https://source.unsplash.com/1600x900/?beach';
   // getting logout from authContext
-  const { logout, authUser } = useContext(authContext);
+  const { logout, authUser, setAuthUser } = useContext(authContext);
 
   //useState for profile pic
   const [profileUrl, setprofileUrl] = useState(imageUrl);
@@ -38,6 +38,8 @@ function Navbar() {
         error: <b>Could not Log Off</b>
       }
     )
+    setAuthUser(null);
+    router.push('/auth/login');
   }
 
   const handleProfileBtn = () => {
