@@ -102,7 +102,7 @@ function signup() {
 
   console.log('render function of signup page');
   return (
-    <Page bgColor = 'bg-slate-100'>
+    <Page bgColor = 'bg-slate-100' title= 'Sign UP' content = 'signup page'>
 
       {/* add toast */}
       <Toaster position='top-right' />
@@ -177,7 +177,7 @@ function signup() {
 
           <div className="text-grey-dark mt-6">
             Already have an account?
-            <a className="no-underline border-b border-blue text-blue" href="../login/">
+            <a className="no-underline border-b border-blue text-blue" href="#" onClick = {() => router.push('/auth/login')}>
               Log in
             </a>
           </div>
