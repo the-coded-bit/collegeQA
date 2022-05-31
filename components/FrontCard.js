@@ -28,7 +28,8 @@ function FrontCard({ questionId, stringValue, setAnswerModal, setquestionID }) {
     // function to get User answered and timestamp when he answered the question
     const getUserWithTimeStamp = async (questionId) => {
         const document = await getDoc(doc(db, `questions/${questionId}`));
-        const answerEle = document.data().answers[0] || {};
+        var answerArray = document.data().answers;
+        const answerEle = answerArray[answerArray.length - 1] || {};
         // console.log(answerEle);
         const { answer = 'no answer', timestamp = 'invalid date', userAnswered = '' } = answerEle;
         let name = 'no name';
@@ -66,13 +67,13 @@ function FrontCard({ questionId, stringValue, setAnswerModal, setquestionID }) {
                 </div>
                 <button className='mx-2 p-2 border-2 border-indigo-600 rounded-full' onClick = {() => router.push(`/answer?id=${questionId}`)}>View more</button>
             </div>
-            <div className='group h-4/5 flex flex-col justify-center items-center relative'>
+            <div className='group h-4/5 flex flex-col justify-center relative'>
                 <div className='question m-2 h-1/5 font-bold group-hover:opacity-50'>{stringValue}</div>
                 <div className='answer m-2 h-3/5 overflow-hidden group-hover:opacity-50 text-left'>
                     {answer}
                 </div>
                 <button
-                    className='bg-indigo-600 rounded-xl text-sm p-2 font-medium text-white hidden group-hover:block absolute m-auto shadow-xl'
+                    className='bg-indigo-600 rounded-xl text-sm p-2 font-medium text-white hidden group-hover:block absolute m-auto shadow-xl left-1/2'
                     onClick={() => handleAnswerBtn(questionId)}>
                     Your Opinion
                 </button>
