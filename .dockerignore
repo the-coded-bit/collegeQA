@@ -1,0 +1,7 @@
+README.md
+node_modules/
+.gitignore
+Screenshots/
+public/
+.next/
+.env.local
