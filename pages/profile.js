@@ -28,7 +28,7 @@ function profile() {
       //resolving questions asked by user
       const docSnap = await getDoc(doc(db, `users/${authUser.uid}`));
 
-      const allQuestionPromises = docSnap.data().questionsAsked.map(async (val) => {
+      const allQuestionPromises = docSnap.data()?.questionsAsked.map(async (val) => {
         const snap = await getDoc(doc(db, `questions/${val}`));
         return snap.data();
       });
