@@ -81,7 +81,7 @@ function profile() {
           {
             questions.map((question) => (
               <div className='group flex justify-between items-center mb-2 border-b-2 border-slate-400 pb-2'>
-                <span className='truncate w-full group-hover:hidden'>{question.question}</span>
+                <span className='truncate w-full group-hover:hidden'>{question?.question}</span>
                 <button
                   className=' group-hover:block bg-indigo-600 hidden font-semibold text-white text-sm p-2 rounded-md m-auto'
                   onClick={() => router.push(`/answer?id=${question.questionId}`)}>
